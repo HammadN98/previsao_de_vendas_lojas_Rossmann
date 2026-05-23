@@ -9,7 +9,38 @@
 ![Pandas](https://img.shields.io/badge/Pandas-2.0.0-150458?style=for-the-badge&logo=pandas&logoColor=white)
 ![NumPy](https://img.shields.io/badge/NumPy-1.24.0-013243?style=for-the-badge&logo=numpy&logoColor=white)
 
-> Previsão de vendas diárias com Machine Learning para otimizar estoques, escalas e campanhas de marketing.
+A História por Trás do Projeto
+O Desafio
+
+As lojas Rossmann operam com margens apertadas e grande variedade de produtos.
+Todo dia, os gerentes precisam responder perguntas cruciais:
+
+    Quanto comprar para não faltar nem sobrar estoque?
+
+    Quantos funcionários escalar para dar conta do movimento?
+
+    Quando lançar promoções sem desperdiçar investimento?
+
+Sem uma previsão confiável das vendas, as decisões são baseadas em intuição — e isso custa caro, seja em vendas perdidas, seja em desperdício de recursos.
+A Solução
+
+Construímos um modelo de Machine Learning que aprendeu a prever as vendas diárias de cada loja a partir de 26 variáveis (promoções, concorrência, feriados, dia da semana, etc.).
+Usamos XGBoost, que capturou as complexas relações entre esses fatores e as vendas.
+
+O resultado: um sistema que explica 95% das variações de vendas (R² = 0.95) e erra, em média, menos de 900 unidades por dia.
+
+Mas o modelo não ficou apenas nos gráficos do notebook — ele foi colocado em produção como uma API real, acessível a qualquer sistema da Rossmann. Assim, a previsão pode ser integrada ao planejamento de estoque, escalas de funcionários e campanhas de marketing.
+O Impacto para o Negócio
+
+    Redução de rupturas e excesso de estoque — compras alinhadas à demanda real.
+
+    Otimização de mão de obra — escalas baseadas na expectativa de movimento.
+
+    Campanhas mais eficientes — promoções lançadas no momento certo, para a loja certa.
+
+    Decisões rápidas e embasadas — qualquer sistema pode consultar a API e obter a previsão em segundos.
+
+Com deploy gratuito no Render e container Docker pronto, a solução é escalável e de baixíssimo custo.
 
 🔗 **API em produção:** [https://ossmann-sales-prediction.onrender.com/](https://ossmann-sales-prediction.onrender.com/)
 
@@ -167,6 +198,18 @@ previsao_de_vendas_lojas_Rossmann/
 | **Gunicorn** | Servidor WSGI para produção |
 | **Docker** | Containerização |
 | **Render** | Deploy em nuvem (plano gratuito) |
+
+---
+De Onde Viemos e Para Onde Vamos
+O caminho percorrido
+
+    Entendemos o problema de negócio – Previsão diária de vendas é vital para operações enxutas.
+
+    Exploramos os dados – Identificamos as features mais relevantes no histórico de 1.017.209 registros.
+
+    Treinamos e comparamos modelos – XGBoost superou os demais em acurácia e generalização.
+
+    Colocamos no mundo real – API pública, documentada e pronta para integrar com qualquer sistema.
 
 ---
 
