@@ -9,8 +9,8 @@
 ![Pandas](https://img.shields.io/badge/Pandas-2.0.0-150458?style=for-the-badge&logo=pandas&logoColor=white)
 ![NumPy](https://img.shields.io/badge/NumPy-1.24.0-013243?style=for-the-badge&logo=numpy&logoColor=white)
 
-A História por Trás do Projeto
-O Desafio
+## A História por Trás do Projeto
+### O Desafio
 
 As lojas Rossmann operam com margens apertadas e grande variedade de produtos.
 Todo dia, os gerentes precisam responder perguntas cruciais:
@@ -22,15 +22,18 @@ Todo dia, os gerentes precisam responder perguntas cruciais:
     Quando lançar promoções sem desperdiçar investimento?
 
 Sem uma previsão confiável das vendas, as decisões são baseadas em intuição — e isso custa caro, seja em vendas perdidas, seja em desperdício de recursos.
-A Solução
+
+### A Solução
 
 Construímos um modelo de Machine Learning que aprendeu a prever as vendas diárias de cada loja a partir de 26 variáveis (promoções, concorrência, feriados, dia da semana, etc.).
 Usamos XGBoost, que capturou as complexas relações entre esses fatores e as vendas.
 
-O resultado: um sistema que explica 95% das variações de vendas (R² = 0.95) e erra, em média, menos de 900 unidades por dia.
+
+### O resultado: um sistema que explica 95% das variações de vendas (R² = 0.95) e erra, em média, menos de 900 unidades por dia.
 
 Mas o modelo não ficou apenas nos gráficos do notebook — ele foi colocado em produção como uma API real, acessível a qualquer sistema da Rossmann. Assim, a previsão pode ser integrada ao planejamento de estoque, escalas de funcionários e campanhas de marketing.
-O Impacto para o Negócio
+
+### O Impacto para o Negócio
 
     Redução de rupturas e excesso de estoque — compras alinhadas à demanda real.
 
@@ -200,8 +203,9 @@ previsao_de_vendas_lojas_Rossmann/
 | **Render** | Deploy em nuvem (plano gratuito) |
 
 ---
-De Onde Viemos e Para Onde Vamos
-O caminho percorrido
+## De Onde Viemos e Para Onde Vamos
+
+### O caminho percorrido
 
     Entendemos o problema de negócio – Previsão diária de vendas é vital para operações enxutas.
 
