@@ -1,93 +1,166 @@
-# Previsão de Vendas - Lojas Rossmann 
-
-**Como prever as vendas diárias das lojas Rossmann para otimizar o planejamento de estoques, escalas de funcionários e recursos operacionais, aumentando a eficiência e reduzindo custos?**
 
 
 
-## Sumário Executivo
+https://img.shields.io/badge/Python-3.10-blue?style=for-the-badge&logo=python&logoColor=white
+https://img.shields.io/badge/XGBoost-2.0.0-00BFFF?style=for-the-badge
+https://img.shields.io/badge/Flask-2.3.0-000000?style=for-the-badge&logo=flask&logoColor=white
+https://img.shields.io/badge/Docker-24.0.0-2496ED?style=for-the-badge&logo=docker&logoColor=white
+https://img.shields.io/badge/Render-Deploy-46E3B7?style=for-the-badge&logo=render&logoColor=white
+https://img.shields.io/badge/Scikit--learn-1.3.0-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white
+https://img.shields.io/badge/Pandas-2.0.0-150458?style=for-the-badge&logo=pandas&logoColor=white
+https://img.shields.io/badge/NumPy-1.24.0-013243?style=for-the-badge&logo=numpy&logoColor=white
 
-Como prever as vendas diárias das lojas Rossmann para otimizar o planejamento de estoques, escalas de funcionários e recursos operacionais, aumentando a eficiência e reduzindo custos?
+Prevendo vendas diárias com Machine Learning para otimizar estoques, escalas e campanhas de marketing.
+Sobre o Projeto
 
-Essas previsões fornecem uma base estratégica para decisões de gestão de estoques, escalas de funcionários e campanhas de marketing, garantindo maior eficiência operacional e melhor atendimento ao cliente. Fatores como promoções, feriados e a proximidade de concorrentes foram analisados para alcançar maior precisão e confiabilidade nas previsões.
+As lojas Rossmann precisam prever a demanda diária para tomar decisões estratégicas: quanto comprar, quantos funcionários escalar e quando lançar promoções. Este projeto entrega um modelo de XGBoost que explica 95% da variabilidade das vendas (R²) e comete um erro médio de apenas 926 unidades (RMSE).
 
-Através do modelo XGBoost, foi possível atingir 95% de explicação da variabilidade das vendas (R²) e um erro médio de 926 unidades (RMSE).
+O modelo está em produção: uma API Flask containerizada que recebe 26 features e retorna a previsão de vendas em tempo real. Tudo com deploy gratuito no Render.
 
+🔗 API em produção: https://ossmann-sales-prediction.onrender.com/
+Funcionalidades (Features do Modelo)
 
+O modelo utiliza 26 variáveis cuidadosamente selecionadas:
+Categoria	Features
+Loja	Store, StoreType, Assortment
+Tempo	DayOfWeek, Year, Month, Day
+Promoções	Promo, Promo2, Promo2SinceWeek, Promo2SinceYear, PromoInterval
+Feriados	SchoolHoliday, StateHoliday (a, b, c)
+Concorrência	CompetitionDistance, CompetitionOpenSinceMonth, CompetitionOpenSinceYear, CompetitionMissing
+Outros	Open (loja aberta/fechada)
+Resultados do Modelo
+Modelo	RMSE	R²	Tempo (s)
+Regressão Linear	2476.47	0.58	0.10
+Random Forest	1254.14	0.90	44.33
+XGBoost (Otimizado)	884.70	0.95	30.83
 
-# Principais Insights e Recomendacoes
+Validação Cruzada (K-Fold): RMSE Médio = 926.20 ± 6.32
 
-1. Lojas Próximas a Concorrentes
-    * Apresentam alta variabilidade nas vendas, exigindo estratégias mais dinâmicas para gestão de estoques.
+O XGBoost foi o vencedor claro: melhor acurácia, ótima generalização e tempo de treino aceitável.
+Como Usar a API
 
-2. Lojas em Áreas Isoladas
-    * Tendem a ter vendas mais estáveis, com menor interferência de fatores externos.
+A API está no ar e aceita requisições POST para o endpoint /predict.
+Exemplo de Requisição (curl)
+bash
 
-3. Impacto de Promoções
-    * Promoções aumentam significativamente o volume de vendas, sendo uma estratégia essencial para períodos de baixa sazonalidade.
+curl -X POST https://ossmann-sales-prediction.onrender.com/predict \
+  -H "Content-Type: application/json" \
+  -d '{"features": [1,4,1,0,0,2072.0,7,2004,0,46,2009,1,0,0,1,0,0,1,0,0,1,0,1,2014,9,30]}'
 
-4. Influência de Feriados
-    * Feriados afetam o volume de vendas de maneira heterogênea, dependendo da localização da loja e do tipo de feriado.
+Resposta Esperada
+json
 
-    ## Com base nos insights extraídos:
+{
+  "predicted_sales": 5678.45
+}
 
-* Otimização de Estoques
-    * Ajustar o envio de produtos para lojas com maior variação de vendas, reduzindo excessos ou faltas.
-* Planejamento de Escalas
-    * Adaptar o quadro de funcionários para períodos de alta demanda, como promoções ou feriados.
-* Campanhas Localizadas
-    * Personalizar campanhas publicitárias com base em características regionais, como concorrência e sazonalidade.
-# Estrutura dos Dados
-Variáveis Numéricas:
+    ⚠️ Atenção: O Render suspende o serviço após período de inatividade (plano gratuito). Se a API demorar para responder na primeira chamada, aguarde alguns segundos e tente novamente.
 
-* Sales: Vendas diárias (variável-alvo).
-* Customers: Número de clientes diários.
-* CompetitionDistance: Distância para o concorrente mais próximo.
-* Promo2SinceYear: Ano de início da Promoção 2.
+Endpoints Disponíveis
+Método	Rota	Descrição
+GET	/	Informações da API e exemplo de uso
+GET	/health	Verifica se a API está online
+POST	/predict	Envia 26 features e recebe a previsão
+Como Rodar Localmente
+Pré-requisitos
 
-Variáveis Categóricas Codificadas:
+    Python 3.10+
 
-* StoreType: Tipo de loja (A, B, C ou D).
-* Assortment: Variedade de produtos.
-* StateHoliday: Indicação de feriado estadual.
+    pip
 
-# Principais Ações Realizadas
-1. Limpeza e Pré-processamento de Dados
+Passo a Passo
+bash
 
-* Tratamento de valores ausentes e inconsistências, como a variável CompetitionOpenSinceYear.
-* Normalização de variáveis numéricas para modelos sensíveis a escalas.
-* Codificação de variáveis categóricas (StateHoliday, StoreType, etc.) com one-hot encoding.
-* Extração de novas variáveis, como Year, Month e Day, a partir da coluna Date.
+# 1. Clone o repositório
+git clone https://github.com/HammadN98/previsao_de_vendas_lojas_Rossmann.git
+cd previsao_de_vendas_lojas_Rossmann
 
-2.  Modelagem e Testes
+# 2. Instale as dependências
+pip install -r requirements.txt
 
-* Avaliação de diferentes algoritmos, incluindo Regressão Linear, Random Forest e XGBoost.
-* Ajuste de hiperparâmetros usando Grid Search e validação cruzada K-Fold.
-* Comparação de desempenho utilizando RMSE (Root Mean Squared Error) e R².
+# 3. Execute a API
+python app.py
 
-3. Resultados dos Modelos
+A API estará disponível em http://localhost:5000.
+Via Docker
+bash
 
-    | Modelo                | RMSE   | R²   | Tempo (s) |
-    |-----------------------|--------|------|-----------|
-    | Regressão Linear      | 2476.47| 0.58 | 0.10      |
-    | Random Forest         | 1254.14| 0.90 | 44.33     |
-    | **XGBoost (Otimizado)** | **884.70** | **0.95** | **30.83** |
+# 1. Construa a imagem
+docker build -t rossmann-predict .
 
+# 2. Execute o container
+docker run -p 5000:5000 rossmann-predict
 
-4. Validação e Generalização
-* A validação K-Fold confirmou a consistência e robustez do modelo XGBoost:
-    * RMSE Médio: 926.20
-    * Desvio Padrão (RMSE): 6.32
+Estrutura do Projeto
+text
 
-# Conclusão
-A análise confirmou que o modelo XGBoost é a solução mais eficiente para prever as vendas diárias das lojas Rossmann.
+previsao_de_vendas_lojas_Rossmann/
+├── app.py                                     # API Flask
+├── model.pkl                                  # Modelo XGBoost treinado
+├── scaler.pkl                                 # Scaler para normalização
+├── requirements.txt                           # Dependências Python
+├── Dockerfile                                 # Containerização
+├── previsao_das_vendas_lojas_Rossmann.ipynb   # Notebook de treinamento
+└── README.md                                  # Você está aqui
 
-Com um RMSE de 884.70 e R² de 95%, o modelo demonstra alta precisão e capacidade de generalização, sendo ideal para implementação em produção.
+Tecnologias
 
-Os resultados obtidos não apenas garantem previsões confiáveis, mas também oferecem uma base estratégica para otimizar estoques, escalas e campanhas de marketing, aumentando a eficiência e reduzindo custos operacionais.
+    Python 3.10 – Linguagem principal
 
-Esta solução está pronta para auxiliar na tomada de decisões estratégicas e elevar o nível de competitividade das lojas Rossmann.
+    XGBoost – Algoritmo de Gradient Boosting
 
+    Scikit-learn – Pré-processamento e validação
 
+    Flask – API REST
 
+    Gunicorn – Servidor WSGI para produção
+
+    Docker – Containerização
+
+    Render – Deploy em nuvem (plano gratuito)
+
+Diagrama do Fluxo de Previsão
+text
+
+┌──────────┐     ┌──────────┐     ┌──────────┐     ┌──────────┐
+│  Dados   │────▶│   Pré-   │────▶│  Modelo  │────▶│   API    │
+│  Brutos  │     │processa- │     │  XGBoost │     │  Flask   │
+│ (CSV)    │     │  mento   │     │ (.pkl)   │     │ (Render) │
+└──────────┘     └──────────┘     └──────────┘     └────┬─────┘
+                                                        │
+                                              ┌─────────▼─────────┐
+                                              │  Requisição POST  │
+                                              │  com 26 features  │
+                                              └─────────┬─────────┘
+                                                        │
+                                              ┌─────────▼─────────┐
+                                              │  Resposta JSON    │
+                                              │  { predicted_     │
+                                              │    sales: 5678 }  │
+                                              └──────────────────┘
+
+Próximos Passos
+
+    Adicionar autenticação na API
+
+    Implementar logging e monitoramento
+
+    Criar dashboard interativo com Streamlit
+
+    Agendar retreinamento automático do modelo
+
+    Migrar para plano pago do Render (evitar cold start)
+
+Links Úteis
+
+    📓 Notebook de Treinamento
+
+    🐳 Dockerfile
+
+    📦 requirements.txt
+
+    🌐 API em Produção
+
+<p align="center">Feito com ☕ por <a href="https://github.com/HammadN98">Nimer Hammad</a></p> ```
 
 
