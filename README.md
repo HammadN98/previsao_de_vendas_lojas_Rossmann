@@ -29,7 +29,7 @@ Construímos um modelo de Machine Learning que aprendeu a prever as vendas diár
 Usamos XGBoost, que capturou as complexas relações entre esses fatores e as vendas.
 
 
-### O resultado: um sistema que explica 95% das variações de vendas (R² = 0.95) e erra, em média, menos de 900 unidades por dia.
+O resultado: um sistema que explica 95% das variações de vendas (R² = 0.95) e erra, em média, menos de 900 unidades por dia.
 
 Mas o modelo não ficou apenas nos gráficos do notebook — ele foi colocado em produção como uma API real, acessível a qualquer sistema da Rossmann. Assim, a previsão pode ser integrada ao planejamento de estoque, escalas de funcionários e campanhas de marketing.
 
