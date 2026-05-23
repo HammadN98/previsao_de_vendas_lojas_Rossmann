@@ -20,27 +20,30 @@ FEATURES = [
     'Assortment_b', 'Assortment_c', 'Year', 'Month', 'Day'
 ]
 
+@app.route('/')
+def home():
+    return jsonify({
+        'message': 'API de Previsão de Vendas - Lojas Rossmann',
+        'endpoints': {
+            '/predict': 'POST - Envie um JSON com 26 features para obter a previsão de vendas',
+            '/health': 'GET - Verifica se a API está online'
+        },
+        'exemplo': {
+            'curl': 'curl -X POST https://ossmann-sales-prediction.onrender.com/predict -H "Content-Type: application/json" -d \'{"features": [1,4,1,0,0,2072.0,7,2004,0,46,2009,1,0,0,1,0,0,1,0,0,1,0,1,2014,9,30]}\''
+        }
+    })
+
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Receber JSON com os dados
         data = request.get_json()
-        
-        # O JSON deve conter um array com os valores na mesma ordem das FEATURES
-        # Exemplo: {"features": [1, 4, 1, 0, 0, 2072.0, 7, 2004, 0, 46, 2009, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 2014, 9, 30]}
         input_values = data['features']
         
-        # Validar tamanho
         if len(input_values) != len(FEATURES):
             return jsonify({'error': f'Expected {len(FEATURES)} features, got {len(input_values)}'}), 400
         
-        # Converter para DataFrame (1 linha) com os nomes das colunas
         input_df = pd.DataFrame([input_values], columns=FEATURES)
-        
-        # Aplicar o mesmo scaler usado no treino
         input_scaled = scaler.transform(input_df)
-        
-        # Fazer previsão
         prediction = model.predict(input_scaled)
         
         return jsonify({'predicted_sales': float(prediction[0])})
